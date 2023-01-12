@@ -1,0 +1,73 @@
+---
+title: "Graphical Summary for Fluoxetine"
+author: "Zachary Rowson"
+date: "10/27/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(gabi)
+library(data.table)
+library(ggplot2)
+library(tcplfit2)
+```
+
+## Introduction
+
+This document will graphically summarize gabi analysis results for Fluoxetine and display graphics that summarize results for the DNT60 set.
+
+```{r}
+# declare chemical name and index
+chemical <- "Fluoxetine"
+i <- which(chms == "Fluoxetine")
+
+# gather experimental group number for Fluoxetine
+group <- unique(gabi::data_egids(pmr0)[cpid==chemical, egid])
+
+# isolate relevant rows
+rows <- lapply(rows_n, `[[`, i)
+```
+
+## Graphics specific to Individual Chemicals
+
+### Time Series Visualizations
+
+```{r}
+gabi::plot_tSeries(pmr0, chemical = chemical, prsp = "SS")
+gabi::plot_tSeries(pmr0, chemical = chemical, prsp = "PA")
+```
+
+### Endpoint Distributions: Before and After Transform
+
+```{r}
+lapply(mc0, function(data) {
+  gabi::plot_eDist(data, chemical = chemical)
+})
+
+lapply(mc0_n, function(endp) {
+  data <- endp[[1]]
+  gabi::plot_eDist(data, chemical = chemical)
+})
+```
+
+### Benchmark Concentration Analyses
+
+```{r}
+fits <- lapply(rows, gabi::concRespCoreZR, do.plot = TRUE)
+lapply(fits, `[[`, "plot")
+```
+
+## Study-Level Summarizing Graphics
+
+### Heatmaps: Hitcalls and BMDs
+
+```{r}
+pheatmap::pheatmap(hits, 
+                   main = "Hitcall Heatmap for DNT60 Chemicals",
+                   cluster_rows = T, cluster_cols = F,
+                   cutree_rows = 6,
+                   color = viridis::viridis(9),
+                   annotation_col = ann.df, annotation_colors = list(Phase=ann_colors))
+```

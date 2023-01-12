@@ -1,0 +1,106 @@
+---
+title: "gabi Analysis of DNT60 Results Summarization"
+author: "Zachary Rowson"
+date: "10/14/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(data.table)
+library(DT)
+library(magrittr)
+library(gtools)
+```
+
+## Introduction
+
+This document will summarize the results of a gabi analysis of Padilla lab ZFpmr behavioral assays of DNT60 chemicals for developmental neurotoxicity.
+
+This document will summarize...
+
+* Activity by endpoint (hitcall > 0.8 implies activity)
+  + number of chemicals active per endpoint
+  + group chemicals by which endpoint they are found active in
+* Activity by experimental period
+  + activity profiles of chemicals by experimental periods
+  + groups of chemicals sharing the same activity profile
+  + number of chemicals found active in each experimental period (Freeze, Light, Startle, Dark)
+* activity by chemical
+  + for each chemical list their endpoint activity profile
+  + number of endpoints a chemical was active in
+  + group chemicals that share endpoint-activity profiles
+* obtain BMD ranges
+  + for all chemicals
+  + for only chemicals found active in at least one endpoint
+  
+## Activity by Endpoint
+
+### Count Hits per Endpoint
+```{r, echo = FALSE}
+datatable(hitcnt.ac, rownames = FALSE)
+```
+
+### List Chemicals Active per Endpoint
+```{r, echo = FALSE}
+lapply(e.grps, paste, collapse = ", ")
+```
+
+## Activity by Experimental Period
+
+### Number of Chemicals Active per Experimental Period
+
+Activity in an experimental period is defined as having at least one hitcall > 0.8 in an endpoint that describes that experimental period.
+
+### List Chemicals Activity Profiles in Terms of Experimental Period
+
+1 indicates activity in a period and 0 indicates inactivity.
+```{r, echo = FALSE}
+datatable(hit.p.prfls, rownames = FALSE)
+```
+
+### Group Chemicals with similar Activity Profiles by Experimental Period
+```{r, echo = FALSE}
+lapply(prfl.p.grps, paste, collapse = ", ")
+```
+
+### Count Actives per Period
+```{r, echo = FALSE}
+hitcnt.p
+```
+
+## Activity by Chemical
+
+### Activity Profiles of Chemicals by Endpoints
+
+```{r, echo = FALSE}
+datatable(hit.ep.long, rownames = FALSE, options = list(scrollX = TRUE), width = 1000)
+```
+
+### Number of Active Endpoints per Chemical
+
+```{r, echo = FALSE}
+x <- rev(hitcnt.chms[order(hitcnt.chms)])
+datatable(data.table(cpid = names(x), "Number of Active Endpoints" = x), rownames = FALSE)
+```
+
+### Group Chemicals with similar Activity Profiles by Endpoints
+```{r, echo = FALSE}
+n <- c(paste0("Only ", ac[5]), "Inactives", paste0("Only ", ac[17]), paste0(ac[12], " and ", ac[18]))
+names(grps) <- n
+lapply(grps, paste0, collapse = ", ")
+```
+
+## BMD Ranges
+
+### BMD Ranges for Active Chemicals
+
+```{r, echo = FALSE}
+datatable(bmd.rng.hits, rownames = FALSE)
+```
+
+### BMD Ranges for All Chemicals
+
+```{r, echo = FALSE}
+datatable(bmd.rng, rownames = FALSE)
+```

@@ -1,0 +1,164 @@
+---
+title: "Graphical Summary for Fluoxetine"
+author: "Zachary Rowson"
+date: "10/27/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(gabi)
+library(data.table)
+library(ggplot2)
+library(tcplfit2)
+library(pheatmap)
+```
+
+## Introduction
+
+This document will graphically summarize gabi analysis results for Fluoxetine and display graphics that summarize results for the DNT60 set.
+
+```{r}
+# declare chemical name and index
+chemical <- "Fluoxetine"
+i <- which(chms == "Fluoxetine")
+
+# gather experimental group number for Fluoxetine
+group <- unique(gabi::data_egids(pmr0)[cpid==chemical, egid])
+
+# isolate relevant rows
+rows <- lapply(rows_n, `[[`, i)
+```
+
+## Graphics specific to Individual Chemicals
+
+### Time Series Visualizations
+
+```{r}
+gabi::plot_tSeries(pmr0, chemical = chemical, prsp = "SS")
+gabi::plot_tSeries(pmr0, chemical = chemical, prsp = "PA")
+```
+
+### Endpoint Distributions: Before and After Transform
+
+```{r}
+lapply(mc0, function(data) {
+  gabi::plot_eDist(data, chemical = chemical)
+})
+
+lapply(mc0_n, function(endp) {
+  data <- endp[[1]]
+  gabi::plot_eDist(data, chemical = chemical)
+})
+```
+
+### Benchmark Concentration Analyses
+
+```{r}
+fits <- lapply(rows, gabi::concRespCoreZR, do.plot = TRUE)
+lapply(fits, `[[`, "plot")
+```
+
+## Study-Level Summarizing Graphics
+
+### Heatmaps: Hitcalls and BMDs
+
+```{r}
+pheatmap::pheatmap(hits, 
+                   main = "Hitcall Heatmap for DNT60 Chemicals",
+                   cluster_rows = T, cluster_cols = F,
+                   cutree_rows = 6,
+                   color = viridis::viridis(9),
+                   annotation_col = ann.df, annotation_colors = list(Phase=ann_colors))
+
+pheatmap::pheatmap(to_fit, 
+                   main = "BMD Heatmap for DNT60 Chemicals",
+                   cluster_rows = F, cluster_cols = F,
+                   cutree_rows = 6,
+                   color = viridis::viridis(9),
+                   annotation_col = ann.df, annotation_colors = list(Phase=ann_colors))
+```
+
+### Venn/Euler Diagrams
+```{r, echo = FALSE}
+library(VennDiagram)
+library(grid)
+library(gridExtra)
+
+# use habituation endpoints as a practice round
+
+## look at overlap of hits in hbt_L and hbt_D
+sets <- VennDiagram::calculate.overlap(e.grps[c("hbt_L", "hbt_D")])
+
+## calculate set sizes
+set.size <- lapply(sets, length)
+
+## create venn diagrams / Euler graphics
+venn <- draw.pairwise.venn(set.size[[1]], set.size[[2]], set.size[[3]],
+                   category = c("hbt_L", "hbt_D"),
+                   euler.d = TRUE, scaled = TRUE,
+                   cat.cex = rep(1.5,2),
+                   fill = viridis::viridis(2),
+                   alpha = rep(0.5,2),
+                   ind = FALSE)
+# venn.grob <- gTree(children = venn)
+grid.arrange(gTree(children = venn),
+             top = textGrob("Habituation in Light and Dark Overlap", gp=gpar(fontsize=24)))
+rm(sets, set.size, venn)
+
+
+# look at overlap of endpoint activity in Light and Dark exclude AUC and avgJ
+
+## look at overlap of hits in Light
+sets <- VennDiagram::calculate.overlap(e.grps[c("avgS_L","avgA_L","hbt_L")])
+venn <- VennDiagram::venn.diagram(e.grps[c("avgS_L","avgA_L","hbt_L")],
+                          filename = NULL,
+                          main = "Light Endpoints Overlap", main.cex = 2,
+                          fill = viridis::viridis(3),
+                          euler.d = TRUE, scaled = TRUE)
+grid.arrange(gTree(children = venn))
+## calculate set sizes
+set.size <- lapply(sets, length)
+
+## look at overlap of hits in Dark
+sets <- VennDiagram::calculate.overlap(e.grps[c("avgS_D","avgA_D","hbt_D")])
+venn <- VennDiagram::venn.diagram(e.grps[c("avgS_D","avgA_D","hbt_D")],
+                                  filename = NULL,
+                                  main = "Dark Endpoints Overlap", main.cex = 2,
+                                  fill = viridis::viridis(3),
+                                  euler.d = TRUE, scaled = TRUE)
+grid.arrange(gTree(children = venn))
+
+## look at overlap of Transitory hits
+sets <- VennDiagram::calculate.overlap(e.grps[c("strtlA","strtlAavg","strtlF")])
+venn <- VennDiagram::venn.diagram(e.grps[c("strtlA","strtlAavg","strtlF")],
+                                  filename = NULL,
+                                  main = "Transitory Endpoints Overlap", main.cex = 2,
+                                  fill = viridis::viridis(3),
+                                  euler.d = TRUE, scaled = TRUE)
+grid.arrange(gTree(children = venn))
+
+## look at overlap of avgS_L and strtlAavg hits
+sets <- VennDiagram::calculate.overlap(e.grps[c("strtlAavg","avgS_L")])
+venn <- VennDiagram::venn.diagram(e.grps[c("strtlAavg","avgS_L")],
+                                  filename = NULL,
+                                  main = "avgS_L and srtlAavg Overlap", main.cex = 2,
+                                  fill = viridis::viridis(2),
+                                  euler.d = TRUE, scaled = TRUE)
+grid.arrange(gTree(children = venn))
+
+## look at overlap of Light, Dark, and Transitory activity
+lapply(c("Light","Transitory","Dark"), function(prd) hit.p.prfls[])
+p.grps <- list(Light = hit.p.prfls[Light==1, cpid],
+               Dark = hit.p.prfls[Dark==1, cpid],
+               Transition = hit.p.prfls[Startle==1, cpid])
+
+sets <- VennDiagram::calculate.overlap(p.grps)
+venn <- VennDiagram::venn.diagram(p.grps,
+                                  filename = NULL,
+                                  main = "Activity by Period Overlap", main.cex = 2,
+                                  fill = viridis::viridis(3),
+                                  euler.d = TRUE, scaled = TRUE)
+grid.arrange(gTree(children = venn))
+```

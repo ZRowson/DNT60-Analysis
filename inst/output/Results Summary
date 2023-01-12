@@ -1,0 +1,105 @@
+$`Hits by Experimental Period`
+   Period count
+1   Light     9
+2    Dark    12
+3 Startle    13
+
+$`Hits by Assay Component (AC)`
+         acid N
+ 1:     AUC_L 6
+ 2:     AUC_D 6
+ 3:     AUC_T 7
+ 4:     AUC_r 5
+ 5:    avgS_L 6
+ 6:    avgS_D 7
+ 7:    avgS_T 7
+ 8:    avgA_L 5
+ 9:    avgA_D 4
+10:      frzA 4
+11:      frzF 1
+12:    strtlA 1
+13: strtlAavg 7
+14:    strtlF 4
+15:     hbt_L 4
+16:     hbt_D 2
+
+$`BMD Ranges for Active Chemical AC Pairs`
+                     cpid      acid         BMDL          BMD         BMDU
+ 1:        5-Fluorouracil     hbt_D 3.054789e+01 4.117949e+01 6.382055e+01
+ 2: 5,5-diphenylhydandoin    avgA_D 7.028531e-01 1.528680e+00 3.310157e+00
+ 3:   6-Aminonicotinamide     AUC_L 1.099965e+01 1.294754e+01 3.267545e+01
+ 4:   6-Aminonicotinamide     AUC_D 1.110649e+01 1.302975e+01 3.305841e+01
+ 5:   6-Aminonicotinamide     AUC_T 1.091891e+01 1.261596e+01 3.136277e+01
+ 6:   6-Aminonicotinamide    avgS_L 1.084931e+01 1.258676e+01 3.256947e+01
+ 7:   6-Aminonicotinamide    avgS_D 1.109843e+01 1.306841e+01 3.310545e+01
+ 8:   6-Aminonicotinamide    avgS_T 1.088173e+01 1.245588e+01 3.122164e+01
+ 9:   6-Aminonicotinamide     hbt_L 1.251090e+01 3.385529e+01 3.900622e+01
+10:            Acrylamide    avgS_D           NA 1.031872e-02           NA
+11:            Acrylamide strtlAavg           NA 1.812609e-02 6.928481e-02
+12:           Amphetamine     AUC_L 1.082266e+01 1.670658e+01 3.670683e+01
+13:           Amphetamine    avgS_L 1.063398e+01 1.615874e+01 3.412188e+01
+14:           Amphetamine    avgA_L 1.151391e-01 1.413716e-01           NA
+15:           Amphetamine    strtlF 1.159793e-01 1.664213e-01           NA
+16:                   BPA     AUC_D 1.113589e+01 1.581806e+01 2.739893e+01
+17:                   BPA     AUC_T 1.178644e+01 1.754394e+01 3.430366e+01
+18:                   BPA    avgS_D 1.099779e+01 1.569953e+01 2.747042e+01
+19:                   BPA    avgS_T 1.159613e+01 1.693253e+01 3.143213e+01
+20:          Chlorpyrifos    avgA_D 7.182535e-02 1.715726e-01 4.141680e-01
+21:          Chlorpyrifos strtlAavg 2.631099e-01 5.288099e-01 1.428233e+00
+22:          Cocaine Base     AUC_L 1.024832e+02 1.082401e+02 1.193118e+02
+23:          Cocaine Base    avgS_L 1.116345e+02 1.141816e+02 1.189594e+02
+24:          Cocaine Base     hbt_L 1.005317e+02 1.061977e+02 1.170531e+02
+25:            D-sorbitol    avgA_L 9.509325e-02 6.079932e-01 3.907832e+00
+26:            D-sorbitol    strtlA           NA 7.750920e-03 6.340848e-02
+27:            D-sorbitol strtlAavg 2.870030e+01 4.037895e+01 6.937945e+01
+28:             DES (#55) strtlAavg 8.816323e-01 1.292123e+00 2.425601e+00
+29:              Diazepam     AUC_L 1.306277e-03 4.849947e-03 1.838895e-02
+30:              Diazepam     AUC_T 4.450375e-02 8.585734e-02 2.069064e-01
+31:              Diazepam    avgS_L 1.089511e-03 3.864619e-03 1.410159e-02
+32:              Diazepam    avgS_T 4.532971e-02 8.601733e-02 1.903982e-01
+33:              Diazepam     hbt_L 1.540331e-01 4.154039e-01 1.711717e+00
+34:              Dieldrin strtlAavg 3.398968e-02 5.328853e-02 1.220755e-01
+35:            Fluoxetine     AUC_L 7.883588e-02 1.216608e-01 2.105300e-01
+36:            Fluoxetine     AUC_D 7.484799e-02 2.373802e-01 6.324764e-01
+37:            Fluoxetine     AUC_T 7.179879e-02 1.051770e-01 1.696776e-01
+38:            Fluoxetine     AUC_r 7.945953e-01 1.056437e+00 1.596909e+00
+39:            Fluoxetine    avgS_L 7.305020e-02 1.126465e-01 1.946984e-01
+40:            Fluoxetine    avgS_D 7.510702e-02 2.287715e-01 5.909574e-01
+41:            Fluoxetine    avgS_T 6.026738e-02 9.042426e-02 1.495243e-01
+42:            Fluoxetine     hbt_L 6.371012e-01 8.482795e-01 1.306906e+00
+43:            Heptachlor     AUC_D 2.550117e-01 3.467012e-01 5.457443e-01
+44:            Heptachlor     AUC_T 3.494623e-01 5.344234e-01 1.154720e+00
+45:            Heptachlor    avgS_D 2.568410e-01 3.515709e-01 5.612647e-01
+46:            Heptachlor    avgS_T 3.506521e-01 5.302791e-01 1.107365e+00
+47:            Heptachlor    avgA_L 3.099152e-01 4.286677e-01 6.904476e-01
+48:            Heptachlor      frzA 2.720869e-01 3.538265e-01 4.953320e-01
+49:            Heptachlor      frzF 2.207720e-01 2.682375e-01 3.458454e-01
+50:    Heptachlor epoxide     AUC_r 2.316642e-03 4.374265e-03 9.712693e-03
+51:            Loperamide     AUC_L 7.905072e+00 9.821706e+00 1.304176e+01
+52:            Loperamide     AUC_r 7.826964e+00 9.614027e+00 1.267474e+01
+53:            Loperamide    avgS_L 7.803832e+00 9.637792e+00 1.268646e+01
+54:            Loperamide    avgA_L 1.246034e+01 1.688613e+01 2.632243e+01
+55:            Loperamide    strtlF 9.255198e+00 1.218705e+01 1.820774e+01
+56:               Naloxon      frzA 1.015832e+00 7.762770e+00 9.067812e+01
+57:              Paraquat     AUC_D 3.600642e-01 6.475335e-01 1.157679e+00
+58:              Paraquat     AUC_T 2.044378e-01 4.106206e-01 8.107469e-01
+59:              Paraquat     AUC_r 1.386623e+00 2.821509e+00 5.690159e+00
+60:              Paraquat    avgS_D 3.489226e-01 6.230627e-01 1.103889e+00
+61:              Paraquat    avgS_T 2.169878e-01 4.330495e-01 8.664415e-01
+62:              Paraquat strtlAavg 1.445762e+00 3.249496e+00 6.866610e+00
+63:              Paraquat     hbt_D 1.177377e+00 2.710443e+00 3.446382e+00
+64:               PBDE-47     AUC_D 5.795563e-01 7.308798e-01 9.804237e-01
+65:               PBDE-47     AUC_T 7.867530e-01 1.076216e+00 1.695553e+00
+66:               PBDE-47     AUC_r 6.134919e-01 8.193375e-01 1.248575e+00
+67:               PBDE-47    avgS_D 5.851864e-01 7.368664e-01 9.872140e-01
+68:               PBDE-47    avgS_T 7.944145e-01 1.070741e+00 1.641878e+00
+69:         Phenobarbital      frzA           NA 1.107650e-02           NA
+70:         Phenobarbital    strtlF           NA 1.445216e-02           NA
+71:             TBT (#65)    avgA_D 7.530511e-04 1.629190e-03 5.133983e-03
+72:          Tebuconazole    avgA_L 3.478620e-01 7.754451e-01 2.284326e+00
+73:          Tebuconazole    avgA_D 4.964380e-01 1.146955e+00 2.550834e+00
+74:          Tebuconazole strtlAavg 2.705371e+00 3.714478e+00 5.852194e+00
+75:          Triethyl Tin      frzA 1.108624e-02 1.368759e-02 3.665032e-02
+76:          Triethyl Tin    strtlF 3.956106e-04 2.956473e-03 8.965443e-03
+                     cpid      acid         BMDL          BMD         BMDU
+

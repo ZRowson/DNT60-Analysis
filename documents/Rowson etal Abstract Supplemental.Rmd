@@ -1,0 +1,126 @@
+---
+title: "Rowson et al. Abstract Supplemental"
+author: "Zachary Rowson"
+date: "11/15/2021"
+output: 
+  html_document: 
+    code_folding: hide
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(data.table)
+library(DT)
+library(gtools)
+```
+
+## Introduction
+
+This document will provide supplementary information for the Rowson et. al Abstract to be submitted to the 2022 SOT Annual Meeting.
+
+This document will  provide
+
+* Endpoint names, acronyms, and definitions
+* Activity by endpoint
+  + number of chemicals active per endpoint
+  + sets of chemicals active in each endpoint
+
+## Endpoint Names and Definitions
+
+Endpoints were calculated for each experimental subject.
+
+### Endpoints Summarizing Behavior in Illuminated Phase (Light Phase) of PMR Assay
+
+* Area Under Curve in Light (AUC_L)
+  + total distance traveled per 2 minute time period was tracked for the 40 minute Light period resulting in 20 data points in Light
+  + area under the curve formed by this data was calculated using the trapezoidal rule for integral approximation
+* Average Speed in Light (avgS_L)
+  + speed was calculated as total distance traveled / 2 minutes
+  + average speed is calculated as average of 20 data points observed in 40 minute Light period
+* Average Acceleration in Light (avgA_L)
+  + acceleration is calculated as the difference between sequential speed measurements (change in speed / 2 minutes)
+  + average was calculated as average of 19 data points observed in Light
+* Average Jerk in Light (avgJ_L)
+  + Jerk is the rate of change of acceleration, or the second derivative of speed
+  + jerk is calculated as the difference between sequential acceleration measurements (change in acceleration / 2 minutes)
+* Habituation in Light (hbt_L)
+  + Habituation refers to experimental subjects return to baseline behavior after stimulus
+  + Habituation is calculated as maximum speed in Light / (minimum speed in Light + 1)
+
+### Endpoints Summarizing Experimental Subjects Startle Response to Change in Lighting
+
+* Startle Acceleration (strtlA)
+  + measures acceleration caused by change in illumination
+  + calculated as (speed in first period of Dark - speed in last period of Light) / 2 minutes
+* Startle Factor (strtlF)
+  + measures how many times faster (or slower) fish moved after exposure to Dark
+  + calculated as (speed in first period of Dark / speed in last period of Light)
+* Startle Acceleration from Average Speed in Light (strtlAavg)
+  + measures increase in speed during illumination change compared to the average speed in Light
+  + calculated as (speed in first period of Dark - average speed in Light) / 2 minutes
+  
+### Endpoints Summarizing Behavior in Unillumainted Phase (Dark Phase) of PMR Assay
+
+* Area Under Curve in Dark (AUC_D)
+  + total distance traveled per 2 minute time period was tracked for the 40 minute Dark period resulting in 20 data points in Dark
+  + area under the curve formed by this data was calculated using the trapezoidal rule for integral approximation
+* Average Speed in Dark (avgS_D)
+  + speed was calculated as total distance traveled / 2 minutes
+  + average speed is calculated as average of 20 data points observed in 40 minute Dark period
+* Average Acceleration in Dark (avgA_D)
+  + acceleration is calculated as the difference between sequential speed measurements (change in speed / 2 minutes)
+  + average was calculated as average of 19 data points observed in Dark
+* Average Jerk in Dark (avgJ_D)
+  + Jerk is the rate of change of acceleration, or the second derivative of speed
+  + jerk is calculated as the difference between sequential acceleration measurements (change in acceleration / 2 minutes)
+* Habituation in Dark (hbt_D)
+  + Habituation refers to experimental subjects return to baseline behavior after stimulus
+  + Habituation is calculated as maximum speed in Dark / (minimum speed in Dark + 1)
+
+### Other Endpoints
+
+* Area Under Curve of Total Experimental Period (AUC_T)
+  + total distance traveled per 2 minute time period was tracked for the 80 minute experimental period (Light and Dark) resulting in 40 data points
+  + area under the curve formed by this data was calculated using the trapezoidal rule for integral approximation
+* Average Speed During Total Experimental Period (avgS_T)
+  + speed was calculated as total distance traveled / 2 minutes
+  + average speed is calculated as average of 40 data points observed in 80 minute experimental period
+* Ratio of AUC in Dark over AUC in Light (AUC_r)
+  + calculated as (AUC_D / AUC_L)
+
+## Activity by Endpoint
+
+### Number of Hits per endpoint
+
+``` {r}
+# load tcpl fits
+load("tcplfits_n.Rdata")
+
+# create matrix of hitcalls (cpid x endpoint)
+temp <- lapply(tcplfits_n, function(chm) unlist(lapply(chm, function(endp) endp[["summary"]]$hitcall)))
+hitcalls <- do.call("rbind", temp); rm(temp)
+
+# save matrix as a data.table and elongate
+hitcalls_dt <- as.data.table(hitcalls, keep.rownames = TRUE)
+hitcalls_dt[, cpid := rn][, rn := NULL]
+hitcalls_long <- data.table::melt(hitcalls_dt, id.vars = "cpid", measure.vars = names(hitcalls)[1:16],
+                                  variable.name = "acid", value.name = "hitcall")
+
+## count number of hits per endpoint
+hits.per.endp <- hitcalls_long[hitcall > 0.8, .N, by = acid]
+DT::datatable(hits.per.endp)
+```
+
+Average Jerk in Light and Dark do not appear in this table because there were no hits associated with them.
+
+### Sets of Chemicals Declared Active per Endpoint
+
+```{r}
+## loop through endpoints finding chemical names of hits
+endpnt.names <- names(hitcalls_dt)[which(names(hitcalls_dt) != "cpid")]
+names(endpnt.names) <- endpnt.names
+active.sets <- lapply(endpnt.names, function(name) {
+              hitcalls_long[acid==name & hitcall>0.8, cpid]
+            })
+active.sets
+```
