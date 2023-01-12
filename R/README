@@ -1,0 +1,38 @@
+###################################################################
+# This file describes functions used in DNT60Analysis/pipelining.
+# These functions and their operations are analagous to those used
+# OPAnalysis pipelining.
+###################################################################
+
+
+To run DNT60 pipelining, scripts should be run in order
+
+data upload.R -> endpoint creation.R -> row creation.R -> tcplfitter.R -> heatmaps.R -> Consolidate DNT60 Analysis Results.R
+
+
+#### data upload.R
+
+Takes raw data file from Padilla lab and formats as lmr0 format. To see lmr0 format described in more detail see documentation for gabi::as_mc0.
+
+#### endpoint creation.R
+
+Takes lmr0 formatted table, calculates endpoint values using gabi functions, and formats this data in mc0 level tables. Also applies transformation procedure (Box-Cox) to mc0 data. To see detailed description of mc0 level datasets in this context see gabi::as_mc0 documentation.
+
+#### row creation.R
+
+Takes mc0 level datasets and formats data for exposures into tcplFit2 row objects. See tcplFit2 and gabi::as_row documentation to see better description of row objects.
+
+#### tcplfitter.R
+
+Applies tcplFit2 curve-fitting software to row objects. Summaries and figures from curve-fitting are saved in a nested list object.
+
+#### heatmaps.R
+
+Creates BMC heatmap for results from curve-fitting of DNT60 data. May be different than heatmap used in Manuscript related to this work. See ResDNT/Manuscript for the most updated heatmap.
+
+#### Consolidate DNT60 Analysis Results.R
+
+Saves DNT60 tcplFit2 summaries in a large table. Also saves graphics produced by curve-fitting.
+
+
+
